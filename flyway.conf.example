@@ -1,0 +1,4 @@
+flyway.user=
+flyway.password=
+flyway.url=jdbc:postgresql://host:port/db_name
+flyway.locations=classpath:db/migration
