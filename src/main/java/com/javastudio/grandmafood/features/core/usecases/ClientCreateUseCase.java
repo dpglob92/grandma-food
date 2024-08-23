@@ -5,7 +5,9 @@ import com.javastudio.grandmafood.features.core.definitions.client.IClientCreate
 import com.javastudio.grandmafood.features.core.entities.client.Client;
 import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
 import jakarta.validation.Validator;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientCreateUseCase implements IClientCreateUseCase {
 
     private final ClientJPAEntityRepository repository;

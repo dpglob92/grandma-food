@@ -3,7 +3,9 @@ package com.javastudio.grandmafood.features.core.usecases;
 import com.javastudio.grandmafood.features.core.database.repositories.ClientJPAEntityRepository;
 import com.javastudio.grandmafood.features.core.definitions.client.IClientDeleteUseCase;
 import jakarta.validation.Validator;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientDeleteUseCase implements IClientDeleteUseCase {
 
     private final ClientJPAEntityRepository repository;
