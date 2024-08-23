@@ -3,7 +3,7 @@ package com.javastudio.grandmafood;
 import com.javastudio.grandmafood.common.exceptions.ApplicationException;
 import com.javastudio.grandmafood.common.exceptions.ExceptionCode;
 import com.javastudio.grandmafood.common.exceptions.InvalidInputException;
-import com.javastudio.grandmafood.errors.CustomerNotFoundException;
+import com.javastudio.grandmafood.features.errors.ClientNotFoundException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +28,6 @@ public class DummyErrorController {
 
     @GetMapping("/custom")
     public String myCustomExc() {
-        throw new CustomerNotFoundException();
+        throw new ClientNotFoundException();
     }
 }
