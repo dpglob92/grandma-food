@@ -11,6 +11,9 @@ import java.util.UUID;
 @Repository
 public interface ClientJPAEntityRepository extends JpaRepository<ClientJPAEntity, UUID> {
 
-    @Query("SELECT u FROM client u WHERE u.documentId = ?1 AND u.deletedAt IS NULL")
+    @Query("SELECT c FROM client c WHERE c.documentId = ?1 AND c.deletedAt IS NULL")
     Optional<ClientJPAEntity> findByDocumentId(String documentId);
+
+    @Query("SELECT c FROM client c WHERE c.email = ?1 AND c.deletedAt IS NULL")
+    Optional<ClientJPAEntity> findByEmail(String email);
 }
