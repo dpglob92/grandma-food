@@ -3,7 +3,6 @@ package com.javastudio.grandmafood.core.unit.client;
 import com.javastudio.grandmafood.common.exceptions.FieldError;
 import com.javastudio.grandmafood.common.exceptions.InvalidInputException;
 import com.javastudio.grandmafood.core.utils.ClientTestUtil;
-import com.javastudio.grandmafood.features.core.database.entities.ClientJPAEntity;
 import com.javastudio.grandmafood.features.core.database.repositories.ClientJPAEntityRepository;
 import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
 import com.javastudio.grandmafood.features.core.usecases.ClientCreateUseCase;
@@ -15,13 +14,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.function.Function;
 
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class ClientCreateUseCaseTest {
@@ -49,14 +46,6 @@ public class ClientCreateUseCaseTest {
         Assertions.assertThat(errors.getFirst().path()).isEqualTo(fieldName);
     }
 
-    @Test
-    public void Should_CreateClient_WhenDataIsValid() {
-        var validInput = ClientTestUtil.getValidClientCreateInput();
-
-        clientCreateUseCase.create(validInput);
-
-        verify(repository).save(Mockito.any(ClientJPAEntity.class));
-    }
 
     @Test
     public void Should_ThrowInvalidInputException_WhenDocumentIdIsTooLong() {

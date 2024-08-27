@@ -69,7 +69,7 @@ public class ClientFindIntegrationTests {
     @Test
     public void Should_NotFindClient_GivenDocumentId() {
 
-        var clientFound = clientFindUseCase.findByDocument(client2.getDocumentId());
+        var clientFound = clientFindUseCase.findByDocument("1325464684");
 
         Assertions.assertThat(clientFound).isEmpty();
     }
