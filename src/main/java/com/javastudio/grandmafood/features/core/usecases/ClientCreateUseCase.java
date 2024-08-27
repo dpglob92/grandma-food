@@ -12,7 +12,11 @@ import com.javastudio.grandmafood.features.errors.ClientUniqueEmailException;
 import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Component
 public class ClientCreateUseCase implements IClientCreateUseCase {
@@ -29,16 +33,9 @@ public class ClientCreateUseCase implements IClientCreateUseCase {
 
     @Override
     public Client create(ClientCreateInput input) {
-        // validate inputs, documentId and email
+
+        // validate inputs
         ValidationUtils.validate(validator, input);
-
-        if (repository.findByDocumentId(input.getDocumentId()).isPresent()) {
-            throw new ClientUniqueDocumentException();
-        }
-
-        if (repository.findByEmail(input.getEmail()).isPresent()) {
-            throw new ClientUniqueEmailException();
-        }
 
         logger.debug("Creating client with name: {} and documentId: {}", input.getName(), input.getDocumentId());
         ClientJPAEntity clientJPA = ClientJPAEntity.builder()
@@ -48,10 +45,22 @@ public class ClientCreateUseCase implements IClientCreateUseCase {
                 .email(input.getEmail())
                 .phone(input.getPhone())
                 .deliveryAddress(input.getDeliveryAddress())
+                .createdAt(LocalDateTime.now(ZoneOffset.UTC))
+                .updatedAt(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
+        try {
+            ClientJPAEntity clientCreated = repository.save(clientJPA);
+            logger.info("Client created with documentId: {}", clientJPA.getId());
+            return ClientAdapter.jpaEntityToDomain(clientCreated);
+        } catch (DataIntegrityViolationException e) {
+            if (e.getMessage().contains("client.email_unique_constraint")) {
+                throw new ClientUniqueEmailException();
+            } else if (e.getMessage().contains("client.document_id_unique_constraint")) {
+                throw new ClientUniqueDocumentException();
+            }
+            throw e;
+        }
 
-        ClientJPAEntity clientCreated = repository.save(clientJPA);
-        logger.info("Client created with id: {}", clientCreated.getId());
-        return ClientAdapter.jpaEntityToDomain(clientCreated);
+
     }
 }
