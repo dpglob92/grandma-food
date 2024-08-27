@@ -41,7 +41,7 @@ public class ClientCreateIntegrationTests {
 
             CustomAssertions.assertDateTimeIsCloseToNow(client.getCreatedAt(), 5);
             CustomAssertions.assertDateTimeIsCloseToNow(client.getUpdatedAt(), 5);
-            Assertions.assertThat(client.getDeletedAt()).isEqualTo(null);
+            Assertions.assertThat(client.getDeletedAt()).isNull();
         } else {
             Assertions.fail("client not found");
         }
