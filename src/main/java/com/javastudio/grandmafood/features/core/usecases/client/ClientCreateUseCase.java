@@ -26,9 +26,16 @@ public class ClientCreateUseCase implements IClientCreateUseCase {
 
     private final Validator validator;
 
-    public ClientCreateUseCase(ClientJPAEntityRepository repository, Validator validator) {
+    private final ClientAdapter clientAdapter;
+
+    public ClientCreateUseCase(
+            ClientJPAEntityRepository repository,
+            Validator validator,
+            ClientAdapter clientAdapter
+    ) {
         this.repository = repository;
         this.validator = validator;
+        this.clientAdapter = clientAdapter;
     }
 
     @Override
@@ -51,7 +58,7 @@ public class ClientCreateUseCase implements IClientCreateUseCase {
         try {
             ClientJPAEntity clientCreated = repository.save(clientJPA);
             logger.info("Client created with documentId: {}", clientJPA.getId());
-            return ClientAdapter.jpaEntityToDomain(clientCreated);
+            return clientAdapter.jpaEntityToDomain(clientCreated);
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage().contains("client.email_unique_constraint")) {
                 throw new ClientUniqueEmailException();

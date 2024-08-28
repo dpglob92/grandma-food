@@ -2,10 +2,12 @@ package com.javastudio.grandmafood.features.core.database.adapters;
 
 import com.javastudio.grandmafood.features.core.database.entities.ClientJPAEntity;
 import com.javastudio.grandmafood.features.core.entities.client.Client;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientAdapter {
 
-    public static Client jpaEntityToDomain(ClientJPAEntity clientJPAEntity) {
+    public Client jpaEntityToDomain(ClientJPAEntity clientJPAEntity) {
         return Client.builder()
                 .uuid(clientJPAEntity.getId())
                 .documentId(clientJPAEntity.getDocumentId())
@@ -20,7 +22,7 @@ public class ClientAdapter {
                 .build();
     }
 
-    public static ClientJPAEntity domainToJPAEntity(Client client) {
+    public ClientJPAEntity domainToJPAEntity(Client client) {
         return ClientJPAEntity.builder()
                 .id(client.getUuid())
                 .documentId(client.getDocumentId())

@@ -4,6 +4,7 @@ import com.javastudio.grandmafood.common.exceptions.ExceptionCode;
 import com.javastudio.grandmafood.common.exceptions.FieldError;
 import com.javastudio.grandmafood.common.exceptions.InvalidInputException;
 import com.javastudio.grandmafood.core.utils.ClientTestUtil;
+import com.javastudio.grandmafood.features.core.database.adapters.ClientAdapter;
 import com.javastudio.grandmafood.features.core.database.entities.ClientJPAEntity;
 import com.javastudio.grandmafood.features.core.database.repositories.ClientJPAEntityRepository;
 import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
@@ -34,11 +35,18 @@ public class ClientCreateUseCaseTest {
     @Mock
     private ClientJPAEntityRepository repository;
 
+    @Mock
+    private ClientAdapter clientAdapter;
+
     private ClientCreateUseCase clientCreateUseCase;
 
     @BeforeEach
     public void setup() {
-        clientCreateUseCase = new ClientCreateUseCase(repository, Validation.buildDefaultValidatorFactory().getValidator());
+        clientCreateUseCase = new ClientCreateUseCase(
+                repository,
+                Validation.buildDefaultValidatorFactory().getValidator(),
+                clientAdapter
+        );
     }
 
     private void commonInvalidInputTest(Function<ClientCreateInput, ClientCreateInput> fieldSetter, String fieldName) {

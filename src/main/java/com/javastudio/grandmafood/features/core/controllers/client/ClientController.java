@@ -28,10 +28,18 @@ public class ClientController {
     private final ClientFindUseCase clientFindUseCase;
     private final ClientDeleteUseCase clientDeleteUseCase;
 
-    public ClientController(ClientCreateUseCase clientCreateUseCase, ClientFindUseCase clientFindUseCase, ClientDeleteUseCase clientDeleteUseCase) {
+    private final ClientDTOMapper clientDTOMapper;
+
+    public ClientController(
+            ClientCreateUseCase clientCreateUseCase,
+            ClientFindUseCase clientFindUseCase,
+            ClientDeleteUseCase clientDeleteUseCase,
+            ClientDTOMapper clientDTOMapper
+    ) {
         this.clientCreateUseCase = clientCreateUseCase;
         this.clientFindUseCase = clientFindUseCase;
         this.clientDeleteUseCase = clientDeleteUseCase;
+        this.clientDTOMapper = clientDTOMapper;
     }
 
     @PostMapping("/")
@@ -39,7 +47,7 @@ public class ClientController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "Successfully created a new actor",
+                    description = "Successfully created a new client",
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseModel.class))
                     }
@@ -53,16 +61,23 @@ public class ClientController {
             ),
             @ApiResponse(
                     responseCode = "409",
-                    description = "customer with document number already exists",
+                    description = "Client with the specified document id already exists",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Client with the specified email already exists",
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }
             )
     })
     ResponseEntity<ClientResponseModel> create(@RequestBody ClientCreateDTO clientCreateDTO) {
-        ClientCreateInput input = ClientControllerDataMapper.clientToDomain(clientCreateDTO);
+        ClientCreateInput input = clientDTOMapper.clientToDomain(clientCreateDTO);
         Client client = clientCreateUseCase.create(input);
-        ClientResponseModel responseModel = ClientControllerDataMapper.clientResponseModel(client);
+        ClientResponseModel responseModel = clientDTOMapper.clientResponseModel(client);
         return ResponseEntity.status(201).body(responseModel);
     }
 
@@ -77,7 +92,7 @@ public class ClientController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "client not found",
+                    description = "Client not found",
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }
@@ -89,7 +104,7 @@ public class ClientController {
         if (client.isEmpty()) {
             throw new ClientNotFoundException();
         }
-        ClientResponseModel responseModel = ClientControllerDataMapper.clientResponseModel(client.get());
+        ClientResponseModel responseModel = clientDTOMapper.clientResponseModel(client.get());
         return ResponseEntity.ok(responseModel);
     }
 
@@ -99,7 +114,7 @@ public class ClientController {
             @ApiResponse(responseCode = "204"),
             @ApiResponse(
                     responseCode = "404",
-                    description = "client not found",
+                    description = "Client not found",
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }

@@ -18,21 +18,24 @@ public class ClientFindUseCase implements IClientFindUseCase {
 
     private final ClientJPAEntityRepository repository;
 
-    public ClientFindUseCase(ClientJPAEntityRepository repository) {
+    private final ClientAdapter clientAdapter;
+
+    public ClientFindUseCase(ClientJPAEntityRepository repository, ClientAdapter clientAdapter) {
         this.repository = repository;
+        this.clientAdapter = clientAdapter;
     }
 
     @Override
     public Optional<Client> findById(UUID uuid) {
         logger.info("Finding client with id: {}", uuid);
         Optional<ClientJPAEntity> clientOptional = repository.findById(uuid);
-        return clientOptional.map(ClientAdapter::jpaEntityToDomain);
+        return clientOptional.map(clientAdapter::jpaEntityToDomain);
     }
 
     @Override
     public Optional<Client> findByDocument(String documentId) {
         logger.info("Finding client with documentId: {}", documentId);
         Optional<ClientJPAEntity> clientOptional = repository.findByDocumentId(documentId);
-        return clientOptional.map(ClientAdapter::jpaEntityToDomain);
+        return clientOptional.map(clientAdapter::jpaEntityToDomain);
     }
 }

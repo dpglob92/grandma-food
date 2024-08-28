@@ -3,8 +3,9 @@ package com.javastudio.grandmafood.features.core.controllers.client;
 import com.javastudio.grandmafood.features.core.entities.client.Client;
 import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
 
-public class ClientControllerDataMapper {
-    public static ClientCreateInput clientToDomain(ClientCreateDTO data) {
+public class ClientDTOMapper {
+
+    public ClientCreateInput clientToDomain(ClientCreateDTO data) {
         ClientDocumentUtils.DocumentData documentData = ClientDocumentUtils.separateDocument(data.getDocument());
         return ClientCreateInput.builder()
                 .documentType(documentData.documentType())
@@ -16,7 +17,7 @@ public class ClientControllerDataMapper {
                 .build();
     }
 
-    public static ClientResponseModel clientResponseModel(Client client) {
+    public  ClientResponseModel clientResponseModel(Client client) {
         String document = ClientDocumentUtils.concatenateDocument(client.getDocumentType(), client.getDocumentId());
         return ClientResponseModel.builder()
                 .document(document)
