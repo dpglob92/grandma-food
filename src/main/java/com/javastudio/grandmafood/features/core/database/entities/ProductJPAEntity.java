@@ -18,7 +18,7 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 @Entity(name="Product")
 @Table(name="product", uniqueConstraints = {
-        @UniqueConstraint(name = "name_id_unique_constraint", columnNames = {"name"}),
+        @UniqueConstraint(name = "name_unique_constraint", columnNames = {"name"}),
 })
 public class ProductJPAEntity {
 

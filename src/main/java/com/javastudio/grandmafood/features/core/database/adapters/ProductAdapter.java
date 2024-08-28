@@ -2,10 +2,12 @@ package com.javastudio.grandmafood.features.core.database.adapters;
 
 import com.javastudio.grandmafood.features.core.database.entities.ProductJPAEntity;
 import com.javastudio.grandmafood.features.core.entities.product.Product;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductAdapter {
 
-    public static Product jpaEntityToDomain(ProductJPAEntity productJPAEntity) {
+    public Product jpaEntityToDomain(ProductJPAEntity productJPAEntity) {
         return Product.builder()
                 .uuid(productJPAEntity.getId())
                 .name(productJPAEntity.getName())
@@ -19,7 +21,7 @@ public class ProductAdapter {
                 .build();
     }
 
-    public static ProductJPAEntity domainToJPAEntity(Product product) {
+    public ProductJPAEntity domainToJPAEntity(Product product) {
         return ProductJPAEntity.builder()
                 .id(product.getUuid())
                 .name(product.getName())

@@ -29,7 +29,7 @@ public class ProductCreateIntegrationTests {
 
         if (retrievedProduct.isPresent()) {
             var currentProduct = retrievedProduct.get();
-            Assertions.assertThat(currentProduct.getName()).isEqualTo(validInput.getName());
+            Assertions.assertThat(currentProduct.getName()).isEqualTo(validInput.getName().toUpperCase());
             Assertions.assertThat(currentProduct.getDescription()).isEqualTo(validInput.getDescription());
             Assertions.assertThat(currentProduct.getFoodCategory()).isEqualTo(validInput.getFoodCategory());
             Assertions.assertThat(currentProduct.getPrice()).isEqualTo(validInput.getPrice());
@@ -37,7 +37,7 @@ public class ProductCreateIntegrationTests {
 
             CustomAssertions.assertDateTimeIsCloseToNow(currentProduct.getCreatedAt(), 5);
             CustomAssertions.assertDateTimeIsCloseToNow(currentProduct.getUpdatedAt(), 5);
-            Assertions.assertThat(currentProduct.getDeletedAt()).isEqualTo(null);
+            Assertions.assertThat(currentProduct.getDeletedAt()).isNull();
         } else {
             Assertions.fail("product not found");
         }

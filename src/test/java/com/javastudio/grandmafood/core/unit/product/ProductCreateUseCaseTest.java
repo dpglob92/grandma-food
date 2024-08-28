@@ -7,6 +7,7 @@ import com.javastudio.grandmafood.core.utils.ProductTestUtil;
 import com.javastudio.grandmafood.features.core.database.adapters.ProductAdapter;
 import com.javastudio.grandmafood.features.core.database.entities.ProductJPAEntity;
 import com.javastudio.grandmafood.features.core.database.repositories.ProductJPAEntityRepository;
+import com.javastudio.grandmafood.features.core.entities.product.Product;
 import com.javastudio.grandmafood.features.core.entities.product.ProductCreateInput;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductCreateUseCase;
 import com.javastudio.grandmafood.features.errors.ProductUniqueNameException;
@@ -15,6 +16,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,11 +35,20 @@ public class ProductCreateUseCaseTest {
     @Mock
     private ProductJPAEntityRepository repository;
 
+    @Mock
+    private ProductAdapter productAdapter;
+
     private ProductCreateUseCase createUseCase;
+
+    private final ProductAdapter productAdapterUtility = new ProductAdapter();
 
     @BeforeEach
     public void setup() {
-        createUseCase = new ProductCreateUseCase(repository, Validation.buildDefaultValidatorFactory().getValidator());
+        createUseCase = new ProductCreateUseCase(
+                repository,
+                Validation.buildDefaultValidatorFactory().getValidator(),
+                productAdapter
+        );
     }
 
     private void commonInvalidInputTest(Function<ProductCreateInput, ProductCreateInput> fieldSetter, String fieldName) {
@@ -56,11 +67,14 @@ public class ProductCreateUseCaseTest {
     @Test
     public void Should_CreateProductWithNameInUpperCase_WhenDataIsValid() {
         var validInput = ProductTestUtil.getValidProductCreateInput();
-        var productJPAEntity = ProductAdapter.domainToJPAEntity(ProductTestUtil.getValidProduct());
 
         createUseCase.create(validInput);
 
-        verify(repository).save(Mockito.eq(productJPAEntity));
+        ArgumentCaptor<ProductJPAEntity> argument = ArgumentCaptor.forClass(ProductJPAEntity.class);
+
+        verify(repository).save(argument.capture());
+
+        Assertions.assertThat(argument.getValue().getName()).isEqualTo(validInput.getName().toUpperCase());
     }
 
     @Test
@@ -68,7 +82,7 @@ public class ProductCreateUseCaseTest {
         var validInput = ProductTestUtil.getValidProductCreateInput();
 
         when(repository.save(Mockito.any(ProductJPAEntity.class))).thenThrow(
-                new DataIntegrityViolationException("bla bla for key 'product.name_id_unique_constraint' bla bla")
+                new DataIntegrityViolationException("bla bla for key 'product.name_unique_constraint' bla bla")
         );
 
         Assertions.assertThatThrownBy(() -> createUseCase.create(validInput))
