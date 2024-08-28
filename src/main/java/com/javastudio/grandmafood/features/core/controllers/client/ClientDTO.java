@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ClientResponseModel {
+public class ClientDTO {
 
     @Schema(description = "document type and number in the format type-number, e.g: CC-1002001032")
     private String document;

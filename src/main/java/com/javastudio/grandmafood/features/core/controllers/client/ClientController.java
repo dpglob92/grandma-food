@@ -49,7 +49,7 @@ public class ClientController {
                     responseCode = "201",
                     description = "Successfully created a new client",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseModel.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ClientDTO.class))
                     }
             ),
             @ApiResponse(
@@ -74,10 +74,10 @@ public class ClientController {
                     }
             )
     })
-    ResponseEntity<ClientResponseModel> create(@RequestBody ClientCreateDTO clientCreateDTO) {
-        ClientCreateInput input = clientDTOMapper.clientToDomain(clientCreateDTO);
+    ResponseEntity<ClientDTO> create(@RequestBody ClientCreateDTO clientCreateDTO) {
+        ClientCreateInput input = clientDTOMapper.toDomain(clientCreateDTO);
         Client client = clientCreateUseCase.create(input);
-        ClientResponseModel responseModel = clientDTOMapper.clientResponseModel(client);
+        ClientDTO responseModel = clientDTOMapper.domainToDto(client);
         return ResponseEntity.status(201).body(responseModel);
     }
 
@@ -87,7 +87,7 @@ public class ClientController {
             @ApiResponse(
                     responseCode = "200",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseModel.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ClientDTO.class))
                     }
             ),
             @ApiResponse(
@@ -98,13 +98,13 @@ public class ClientController {
                     }
             )
     })
-    ResponseEntity<ClientResponseModel> getOne(@PathVariable("document") String document) {
+    ResponseEntity<ClientDTO> getOne(@PathVariable("document") String document) {
         ClientDocumentUtils.DocumentData documentSeparate = ClientDocumentUtils.separateDocument(document);
         Optional<Client> client = clientFindUseCase.findByDocument(documentSeparate.documentId());
         if (client.isEmpty()) {
             throw new ClientNotFoundException();
         }
-        ClientResponseModel responseModel = clientDTOMapper.clientResponseModel(client.get());
+        ClientDTO responseModel = clientDTOMapper.domainToDto(client.get());
         return ResponseEntity.ok(responseModel);
     }
 

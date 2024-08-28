@@ -2,10 +2,12 @@ package com.javastudio.grandmafood.features.core.controllers.client;
 
 import com.javastudio.grandmafood.features.core.entities.client.Client;
 import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientDTOMapper {
 
-    public ClientCreateInput clientToDomain(ClientCreateDTO data) {
+    public ClientCreateInput toDomain(ClientCreateDTO data) {
         ClientDocumentUtils.DocumentData documentData = ClientDocumentUtils.separateDocument(data.getDocument());
         return ClientCreateInput.builder()
                 .documentType(documentData.documentType())
@@ -17,9 +19,9 @@ public class ClientDTOMapper {
                 .build();
     }
 
-    public  ClientResponseModel clientResponseModel(Client client) {
+    public ClientDTO domainToDto(Client client) {
         String document = ClientDocumentUtils.concatenateDocument(client.getDocumentType(), client.getDocumentId());
-        return ClientResponseModel.builder()
+        return ClientDTO.builder()
                 .document(document)
                 .name(client.getName())
                 .email(client.getEmail())
