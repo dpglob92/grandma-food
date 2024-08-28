@@ -1,9 +1,6 @@
 package com.javastudio.grandmafood.features.core.entities.client;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +26,7 @@ public class ClientCreateInput {
     private String email;
 
     @NotNull
-    @Size(min = 1, max = 11, message = "the phone must have at most 11 characters and cannot be empty")
+    @Pattern(regexp = "\\d{3}-\\d{7}", message = "the phone must have the following format ddd-ddddddd")
     private String phone;
 
     @NotNull
