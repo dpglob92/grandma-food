@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Entity(name="client")
+@Entity(name="Client")
 @Table(name="client", uniqueConstraints = {
         @UniqueConstraint(name = "document_id_unique_constraint", columnNames = {"document_id"}),
         @UniqueConstraint(name = "email_unique_constraint", columnNames = {"email"})

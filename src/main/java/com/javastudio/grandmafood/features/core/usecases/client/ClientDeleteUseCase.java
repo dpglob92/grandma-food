@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Component
@@ -36,8 +34,8 @@ public class ClientDeleteUseCase implements IClientDeleteUseCase {
         if (clientOptional.isEmpty()) {
             throw new ClientNotFoundException();
         }
-        clientOptional.get().setDeletedAt(LocalDateTime.now(ZoneOffset.UTC));
-        repository.save(clientOptional.get());
+
+        repository.delete(clientOptional.get());
         logger.info("Client deleted with documentId: {}", documentNumber);
     }
 }
