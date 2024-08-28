@@ -3,9 +3,9 @@ package com.javastudio.grandmafood.core.integration;
 import com.javastudio.grandmafood.common.exceptions.ExceptionCode;
 import com.javastudio.grandmafood.core.utils.ClientTestUtil;
 import com.javastudio.grandmafood.features.core.entities.client.Client;
-import com.javastudio.grandmafood.features.core.usecases.ClientCreateUseCase;
-import com.javastudio.grandmafood.features.core.usecases.ClientDeleteUseCase;
-import com.javastudio.grandmafood.features.core.usecases.ClientFindUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientCreateUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientDeleteUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientFindUseCase;
 import com.javastudio.grandmafood.features.errors.ClientNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.UUID;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clean db for each test

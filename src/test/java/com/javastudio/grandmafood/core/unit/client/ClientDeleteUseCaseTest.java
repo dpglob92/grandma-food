@@ -2,7 +2,7 @@ package com.javastudio.grandmafood.core.unit.client;
 
 import com.javastudio.grandmafood.common.exceptions.ExceptionCode;
 import com.javastudio.grandmafood.features.core.database.repositories.ClientJPAEntityRepository;
-import com.javastudio.grandmafood.features.core.usecases.ClientDeleteUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientDeleteUseCase;
 import com.javastudio.grandmafood.features.errors.ClientNotFoundException;
 import jakarta.validation.Validation;
 import org.assertj.core.api.Assertions;

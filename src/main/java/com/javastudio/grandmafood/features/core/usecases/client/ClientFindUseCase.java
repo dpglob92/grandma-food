@@ -1,4 +1,4 @@
-package com.javastudio.grandmafood.features.core.usecases;
+package com.javastudio.grandmafood.features.core.usecases.client;
 
 import com.javastudio.grandmafood.features.core.database.adapters.ClientAdapter;
 import com.javastudio.grandmafood.features.core.database.entities.ClientJPAEntity;

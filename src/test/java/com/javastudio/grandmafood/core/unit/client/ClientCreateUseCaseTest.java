@@ -7,7 +7,7 @@ import com.javastudio.grandmafood.core.utils.ClientTestUtil;
 import com.javastudio.grandmafood.features.core.database.entities.ClientJPAEntity;
 import com.javastudio.grandmafood.features.core.database.repositories.ClientJPAEntityRepository;
 import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
-import com.javastudio.grandmafood.features.core.usecases.ClientCreateUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientCreateUseCase;
 import com.javastudio.grandmafood.features.errors.ClientUniqueDocumentException;
 import com.javastudio.grandmafood.features.errors.ClientUniqueEmailException;
 import jakarta.validation.Validation;

@@ -2,8 +2,8 @@ package com.javastudio.grandmafood.core.integration;
 
 import com.javastudio.grandmafood.core.utils.ClientTestUtil;
 import com.javastudio.grandmafood.core.utils.CustomAssertions;
-import com.javastudio.grandmafood.features.core.usecases.ClientCreateUseCase;
-import com.javastudio.grandmafood.features.core.usecases.ClientFindUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientCreateUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientFindUseCase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
