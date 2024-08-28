@@ -1,6 +1,9 @@
 package com.javastudio.grandmafood.features.core.controllers.client;
 
 import com.javastudio.grandmafood.common.web.ApiError;
+import com.javastudio.grandmafood.features.core.entities.client.Client;
+import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
+import com.javastudio.grandmafood.features.core.usecases.ClientCreateUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/clients")
 @Tag(name = "clients")
 public class ClientController {
+
+    private final ClientCreateUseCase clientCreateUseCase;
+
+    public ClientController(ClientCreateUseCase clientCreateUseCase) {
+        this.clientCreateUseCase = clientCreateUseCase;
+    }
 
     @PostMapping("/")
     @Operation(summary = "Create a new client")
@@ -42,7 +51,10 @@ public class ClientController {
             )
     })
     ResponseEntity<ClientResponseModel> create(@RequestBody ClientCreateDTO clientCreateDTO) {
-        return ResponseEntity.status(201).body(ClientResponseModel.builder().build());
+        ClientCreateInput input = ClientControllerDataMapper.clientToDomain(clientCreateDTO);
+        Client client = clientCreateUseCase.create(input);
+        ClientResponseModel responseModel = ClientControllerDataMapper.clientResponseModel(client);
+        return ResponseEntity.status(201).body(responseModel);
     }
 
     @GetMapping("/{document}")
