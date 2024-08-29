@@ -2,8 +2,8 @@ package com.javastudio.grandmafood.core.integration;
 
 import com.javastudio.grandmafood.core.utils.ClientTestUtil;
 import com.javastudio.grandmafood.features.core.entities.client.Client;
-import com.javastudio.grandmafood.features.core.usecases.ClientCreateUseCase;
-import com.javastudio.grandmafood.features.core.usecases.ClientFindUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientCreateUseCase;
+import com.javastudio.grandmafood.features.core.usecases.client.ClientFindUseCase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,7 +69,7 @@ public class ClientFindIntegrationTests {
     @Test
     public void Should_NotFindClient_GivenDocumentId() {
 
-        var clientFound = clientFindUseCase.findByDocument(client2.getDocumentId());
+        var clientFound = clientFindUseCase.findByDocument("1325464684");
 
         Assertions.assertThat(clientFound).isEmpty();
     }

@@ -4,6 +4,8 @@ import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
+
 
 public class ValidationUtils {
 
@@ -16,6 +18,16 @@ public class ValidationUtils {
             logger.debug("Validation failed");
             InvalidInputException ex = new InvalidInputException();
             valResult.forEach(vr -> ex.addError(vr.getPropertyPath().toString(), vr.getMessage()));
+            throw ex;
+        }
+    }
+
+    public static UUID parseUUID(String uuidString) {
+        try {
+            return UUID.fromString(uuidString);
+        } catch (IllegalArgumentException e) {
+            InvalidInputException ex = new InvalidInputException();
+            ex.addError("uuid", "invalid uuid");
             throw ex;
         }
     }
