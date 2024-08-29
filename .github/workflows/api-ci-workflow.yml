@@ -1,0 +1,60 @@
+name: Spring Boot API CI Workflow
+
+on:
+  pull_request:
+    branches: [dev]
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - "env_examples/**"
+      - "env.example"
+      - "flyway.conf.example"
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # some environments don't have Maven installed
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.5
+
+      - name: Install maven dependencies
+        run: mvn install -DskipTests
+
+      - name: Run tests
+        run: mvn test > test_logs.txt
+
+      - name: Generate test report
+        if: always()
+        run: |
+          mvn surefire-report:report-only
+          mvn site -DgenerateReports=false
+
+      - name: Zip test logs and report
+        if: always()
+        run: |
+          zip -r full-test-report.zip target/site target/surefire-reports
+          zip full-test-report.zip test_logs.txt         
+
+      - name: Upload test logs and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-and-report
+          path: ./full-test-report.zip
+          if-no-files-found: error
+          retention-days: 3
