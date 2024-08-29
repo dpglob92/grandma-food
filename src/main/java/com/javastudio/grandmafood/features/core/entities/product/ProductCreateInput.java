@@ -1,5 +1,6 @@
 package com.javastudio.grandmafood.features.core.entities.product;
 
+import com.javastudio.grandmafood.common.validators.PriceConstraint;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -26,7 +27,11 @@ public class ProductCreateInput {
     private FoodCategory foodCategory;
 
     @NotNull
-    @Positive
+    @PriceConstraint(
+            precision = 10,
+            scale = 2,
+            message = "price must be positive and have a maximum precision of 10 and 2 decimal places"
+    )
     private BigDecimal price;
 
     private boolean available;
