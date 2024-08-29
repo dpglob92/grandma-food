@@ -126,7 +126,23 @@ public class ProductCreateUseCaseTest {
     @Test
     public void Should_ThrowInvalidInputException_WhenPriceIsNegative() {
         commonInvalidInputTest(
-                createInput -> createInput.toBuilder().price(BigDecimal.valueOf(-10.99)).build(),
+                createInput -> createInput.toBuilder().price(new BigDecimal("-10.90")).build(),
+                "price"
+        );
+    }
+
+    @Test
+    public void Should_ThrowInvalidInputException_WhenPriceScaleIsGreaterThanTwo() {
+        commonInvalidInputTest(
+                createInput -> createInput.toBuilder().price(new BigDecimal("250.312")).build(),
+                "price"
+        );
+    }
+
+    @Test
+    public void Should_ThrowInvalidInputException_WhenPricePrecisionIsGreaterThanTen() {
+        commonInvalidInputTest(
+                createInput -> createInput.toBuilder().price(new BigDecimal("123456789.32")).build(),
                 "price"
         );
     }
