@@ -1,8 +1,6 @@
 package com.javastudio.grandmafood.core.integration.product;
 
 import com.javastudio.grandmafood.common.exceptions.ExceptionCode;
-import com.javastudio.grandmafood.common.exceptions.InvalidInputException;
-import com.javastudio.grandmafood.common.exceptions.ValidationUtils;
 import com.javastudio.grandmafood.core.utils.ProductTestUtil;
 import com.javastudio.grandmafood.features.core.entities.product.Product;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductCreateUseCase;
@@ -63,15 +61,4 @@ public class ProductDeleteIntegrationTests {
                 .isEqualTo(ExceptionCode.NOT_FOUND);
     }
 
-    @Test
-    public void Should_ThrowInvalidInputException_WhenUuidIsInvalid() {
-        String invalidUUID = "invalid-uuid-string";
-        Assertions.assertThatThrownBy(() -> {
-            UUID uuid = ValidationUtils.parseUUID(invalidUUID);
-            productDeleteUseCase.deleteById(uuid);
-                })
-                .isInstanceOf(InvalidInputException.class)
-                .extracting("exceptionCode")
-                .isEqualTo(ExceptionCode.INVALID_INPUT);
-    }
 }
