@@ -9,6 +9,7 @@ import com.javastudio.grandmafood.features.core.entities.product.ProductCreateIn
 import com.javastudio.grandmafood.features.core.usecases.product.ProductCreateUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductDeleteUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductFindUseCase;
+import com.javastudio.grandmafood.features.core.usecases.product.ProductUpdateUseCase;
 import com.javastudio.grandmafood.features.errors.ProductNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,17 +33,20 @@ public class ProductController {
     private final ProductFindUseCase findUseCase;
     private final ProductDTOMapper productDTOMapper;
     private final ProductDeleteUseCase deleteUseCase;
+    private final ProductUpdateUseCase updateUseCase;
 
     public ProductController(
             ProductCreateUseCase createUseCase,
             ProductFindUseCase findUseCase,
             ProductDTOMapper productDTOMapper,
-            ProductDeleteUseCase deleteUseCase
+            ProductDeleteUseCase deleteUseCase,
+            ProductUpdateUseCase updateUseCase
     ) {
         this.createUseCase = createUseCase;
         this.findUseCase = findUseCase;
         this.productDTOMapper = productDTOMapper;
         this.deleteUseCase = deleteUseCase;
+        this.updateUseCase = updateUseCase;
     }
 
     @PostMapping("/")
@@ -74,6 +78,39 @@ public class ProductController {
         ProductCreateInput input = productDTOMapper.dtoToDomain(productCreateDTO);
         Product product = createUseCase.create(input);
         return ResponseEntity.status(201).body(productDTOMapper.domainToDTO(product));
+    }
+
+    @PutMapping("/{uuid}")
+    @Operation(summary = "update a product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Product not found",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid uuid",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Product with the specified name already exits",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
+            )
+    })
+    ResponseEntity<ProductDTO> update(@PathVariable("uuid") String uuid, @RequestBody ProductCreateDTO productUpdateDto) {
+        UUID parsedUuid = ValidationUtils.parseUUID(uuid);
+        ProductCreateInput input = productDTOMapper.dtoToDomain(productUpdateDto);
+        updateUseCase.updateById(parsedUuid, input);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{uuid}")
