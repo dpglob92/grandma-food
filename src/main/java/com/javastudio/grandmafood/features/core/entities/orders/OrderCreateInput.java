@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -23,5 +22,5 @@ public class OrderCreateInput {
     private List<@Valid OrderItemCreateInput> orderItems;
 
     @NotNull
-    private UUID clientId;
+    private String clientDocumentId;
 }

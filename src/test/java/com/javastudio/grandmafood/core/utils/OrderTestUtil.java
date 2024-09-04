@@ -38,7 +38,7 @@ public class OrderTestUtil {
                 .orderItems(List.of(
                         new OrderItemCreateInput(UUID.randomUUID(), 2)
                 ))
-                .clientId(UUID.randomUUID())
+                .clientDocumentId("CC-100200300")
                 .build();
     }
 }
