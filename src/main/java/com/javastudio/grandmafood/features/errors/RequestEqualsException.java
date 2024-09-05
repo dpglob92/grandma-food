@@ -5,6 +5,6 @@ import com.javastudio.grandmafood.common.exceptions.ExceptionCode;
 
 public class RequestEqualsException extends ApplicationException {
     public RequestEqualsException() {
-        super("there are no different fields in the request", ExceptionCode.DUPLICATED_RECORD, "REQUEST-EQUAL");
+        super("there are no different fields in the request", ExceptionCode.INVALID_OPERATION, "REQUEST-EQUAL");
     }
 }

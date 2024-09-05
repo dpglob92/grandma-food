@@ -4,8 +4,10 @@ import com.javastudio.grandmafood.common.exceptions.ValidationUtils;
 import com.javastudio.grandmafood.common.web.ApiError;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductCreateDTO;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTO;
+import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductUpdateDTO;
 import com.javastudio.grandmafood.features.core.entities.product.Product;
 import com.javastudio.grandmafood.features.core.entities.product.ProductCreateInput;
+import com.javastudio.grandmafood.features.core.entities.product.ProductUpdateInput;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductCreateUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductDeleteUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductFindUseCase;
@@ -104,11 +106,18 @@ public class ProductController {
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "There are no different fields in the request",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
             )
     })
-    ResponseEntity<ProductDTO> update(@PathVariable("uuid") String uuid, @RequestBody ProductCreateDTO productUpdateDto) {
+    ResponseEntity<ProductDTO> update(@PathVariable("uuid") String uuid, @RequestBody ProductUpdateDTO productUpdateDto) {
         UUID parsedUuid = ValidationUtils.parseUUID(uuid);
-        ProductCreateInput input = productDTOMapper.dtoToDomain(productUpdateDto);
+        ProductUpdateInput input = productDTOMapper.updateDTOToDomain(productUpdateDto);
         updateUseCase.updateById(parsedUuid, input);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

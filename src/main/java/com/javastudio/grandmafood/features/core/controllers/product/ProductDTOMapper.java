@@ -2,8 +2,10 @@ package com.javastudio.grandmafood.features.core.controllers.product;
 
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductCreateDTO;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTO;
+import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductUpdateDTO;
 import com.javastudio.grandmafood.features.core.entities.product.Product;
 import com.javastudio.grandmafood.features.core.entities.product.ProductCreateInput;
+import com.javastudio.grandmafood.features.core.entities.product.ProductUpdateInput;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -29,6 +31,16 @@ public class ProductDTOMapper {
                 .foodCategory(productCreateDTO.getFoodCategory())
                 .price(new BigDecimal(productCreateDTO.getPrice()))
                 .available(productCreateDTO.isAvailable())
+                .build();
+    }
+
+    public ProductUpdateInput updateDTOToDomain(ProductUpdateDTO productUpdateDTO){
+        return ProductUpdateInput.builder()
+                .name(productUpdateDTO.getFantasyName())
+                .description(productUpdateDTO.getDescription())
+                .foodCategory(productUpdateDTO.getFoodCategory())
+                .price(new BigDecimal(productUpdateDTO.getPrice()))
+                .available(productUpdateDTO.isAvailable())
                 .build();
     }
 }

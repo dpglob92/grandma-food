@@ -4,7 +4,7 @@ import com.javastudio.grandmafood.common.exceptions.ValidationUtils;
 import com.javastudio.grandmafood.features.core.database.entities.ProductJPAEntity;
 import com.javastudio.grandmafood.features.core.database.repositories.ProductJPAEntityRepository;
 import com.javastudio.grandmafood.features.core.definitions.product.IProductUpdateUseCase;
-import com.javastudio.grandmafood.features.core.entities.product.ProductCreateInput;
+import com.javastudio.grandmafood.features.core.entities.product.ProductUpdateInput;
 import com.javastudio.grandmafood.features.errors.ProductNotFoundException;
 import com.javastudio.grandmafood.features.errors.ProductUniqueNameException;
 import com.javastudio.grandmafood.features.errors.RequestEqualsException;
@@ -36,7 +36,7 @@ public class ProductUpdateUseCase implements IProductUpdateUseCase {
     }
 
     @Override
-    public void updateById(UUID uuid, ProductCreateInput product) {
+    public void updateById(UUID uuid, ProductUpdateInput product) {
         logger.info("Validating product update");
         ValidationUtils.validate(validator, product);
 
@@ -71,7 +71,7 @@ public class ProductUpdateUseCase implements IProductUpdateUseCase {
         }
     }
 
-    private boolean isProductUnchanged(ProductJPAEntity productEntity, ProductCreateInput productInput) {
+    private boolean isProductUnchanged(ProductJPAEntity productEntity, ProductUpdateInput productInput) {
         return productEntity.getName().equalsIgnoreCase(productInput.getName()) &&
                 productEntity.getFoodCategory().equals(productInput.getFoodCategory()) &&
                 productEntity.getDescription().equals(productInput.getDescription()) &&
