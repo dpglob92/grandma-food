@@ -40,7 +40,7 @@ public class ProductCreateUseCase implements IProductCreateUseCase {
 
     @Override
     public Product create(ProductCreateInput input) {
-        logger.info("Validating actor create input");
+        logger.info("Validating product create input");
         ValidationUtils.validate(validator, input);
 
         ProductJPAEntity productJPAEntity = ProductJPAEntity.builder()
@@ -67,4 +67,5 @@ public class ProductCreateUseCase implements IProductCreateUseCase {
         }
 
     }
+
 }
