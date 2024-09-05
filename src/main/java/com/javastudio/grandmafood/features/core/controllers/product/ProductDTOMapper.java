@@ -1,5 +1,6 @@
 package com.javastudio.grandmafood.features.core.controllers.product;
 
+import com.javastudio.grandmafood.common.exceptions.InvalidInputException;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductCreateDTO;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTO;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductUpdateDTO;
@@ -25,11 +26,22 @@ public class ProductDTOMapper {
     }
 
     public ProductCreateInput dtoToDomain(ProductCreateDTO productCreateDTO){
+
+        BigDecimal parsedPrice;
+
+        try {
+            parsedPrice = new BigDecimal(productCreateDTO.getPrice());
+        } catch (NumberFormatException | NullPointerException e) {
+            InvalidInputException ex = new InvalidInputException();
+            ex.addError("price", "invalid format for price");
+            throw ex;
+        }
+
         return ProductCreateInput.builder()
                 .name(productCreateDTO.getFantasyName())
                 .description(productCreateDTO.getDescription())
                 .foodCategory(productCreateDTO.getFoodCategory())
-                .price(new BigDecimal(productCreateDTO.getPrice()))
+                .price(parsedPrice)
                 .available(productCreateDTO.isAvailable())
                 .build();
     }
