@@ -27,15 +27,7 @@ public class ProductDTOMapper {
 
     public ProductCreateInput dtoToDomain(ProductCreateDTO productCreateDTO){
 
-        BigDecimal parsedPrice;
-
-        try {
-            parsedPrice = new BigDecimal(productCreateDTO.getPrice());
-        } catch (NumberFormatException | NullPointerException e) {
-            InvalidInputException ex = new InvalidInputException();
-            ex.addError("price", "invalid format for price");
-            throw ex;
-        }
+        BigDecimal parsedPrice = parsePriceOrThrowError(productCreateDTO.getPrice());
 
         return ProductCreateInput.builder()
                 .name(productCreateDTO.getFantasyName())
@@ -47,12 +39,25 @@ public class ProductDTOMapper {
     }
 
     public ProductUpdateInput updateDTOToDomain(ProductUpdateDTO productUpdateDTO){
+
+        BigDecimal parsedPrice = parsePriceOrThrowError(productUpdateDTO.getPrice());
+
         return ProductUpdateInput.builder()
                 .name(productUpdateDTO.getFantasyName())
                 .description(productUpdateDTO.getDescription())
                 .foodCategory(productUpdateDTO.getFoodCategory())
-                .price(new BigDecimal(productUpdateDTO.getPrice()))
+                .price(parsedPrice)
                 .available(productUpdateDTO.isAvailable())
                 .build();
+    }
+
+    private BigDecimal parsePriceOrThrowError(String price) {
+        try {
+            return new BigDecimal(price);
+        } catch (NumberFormatException | NullPointerException e) {
+            InvalidInputException ex = new InvalidInputException();
+            ex.addError("price", "invalid format for price");
+            throw ex;
+        }
     }
 }
