@@ -54,3 +54,9 @@ jobs:
         run: |
           docker build -f Dockerfile -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy to app runner
+        env:
+          APP_RUNNER_ARN: ${{ secrets.APP_RUNNER_ARN }}
+        run: |
+          aws apprunner start-deployment --service-arn $APP_RUNNER_ARN
