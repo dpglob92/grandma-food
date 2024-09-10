@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductFindUseCase implements IProductFindUseCase {
@@ -28,10 +30,21 @@ public class ProductFindUseCase implements IProductFindUseCase {
 
     @Override
     public Optional<Product> findById(UUID uuid) {
-        logger.info("Retrieving actor with id: {}", uuid);
+        logger.info("Retrieving product with id: {}", uuid);
         Optional<ProductJPAEntity> productJPAEntity = repository.findById(uuid);
 
         return productJPAEntity.map(productAdapter::jpaEntityToDomain);
 
     }
+
+    @Override
+    public List<Product> filterByFantasyName(String fantasyName) {
+        logger.info("Retrieving products with fantasyName: {}", fantasyName);
+        List<ProductJPAEntity> productList = repository.searchByFantasyName(fantasyName);
+        return productList.stream()
+                .map(productAdapter::jpaEntityToDomain)
+                .collect(Collectors.toList());
+    }
+
+
 }
