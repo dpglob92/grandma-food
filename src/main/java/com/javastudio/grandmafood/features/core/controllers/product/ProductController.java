@@ -161,18 +161,10 @@ public class ProductController {
     @Operation(summary = "Get a products by fantasyName")
     @Parameter(
             in = ParameterIn.QUERY,
-            name ="nationality",
+            name ="q",
             schema = @Schema(type = "string"),
             description = "filter by fantasyName"
     )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))
-                    }
-            )
-    })
     ResponseEntity<List<ProductDTO>> getProducts(@Parameter(hidden = true) @RequestParam("q") String fantasyName) {
         if (fantasyName.isEmpty()) {
             throw new ParameterNullException();
