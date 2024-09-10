@@ -3,11 +3,14 @@ package com.javastudio.grandmafood.features.core.controllers.client;
 import com.javastudio.grandmafood.features.core.entities.client.DocumentType;
 import com.javastudio.grandmafood.features.errors.ClientDocumentTypeUnknownException;
 import com.javastudio.grandmafood.features.errors.ClientInvalidDocumentFormatException;
-import lombok.Getter;
 
 public class ClientDocumentUtils {
     // method to separate the document into type and number
     public static DocumentData separateDocument(String document) {
+        if (document == null) {
+            throw new ClientInvalidDocumentFormatException();
+        }
+
         String[] documentParts = document.split("-", 2);
         if (documentParts.length != 2) {
             throw new ClientInvalidDocumentFormatException();
