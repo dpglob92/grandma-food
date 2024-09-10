@@ -12,8 +12,11 @@ import com.javastudio.grandmafood.features.core.usecases.product.ProductCreateUs
 import com.javastudio.grandmafood.features.core.usecases.product.ProductDeleteUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductFindUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductUpdateUseCase;
+import com.javastudio.grandmafood.features.errors.ParameterNullException;
 import com.javastudio.grandmafood.features.errors.ProductNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -151,6 +155,33 @@ public class ProductController {
         Optional<Product> product = findUseCase.findById(parsedUuid);
         ProductDTO productDTO = productDTOMapper.domainToDTO(product.orElseThrow(ProductNotFoundException::new));
         return ResponseEntity.status(201).body(productDTO);
+    }
+
+    @GetMapping
+    @Operation(summary = "Get a products by fantasyName")
+    @Parameter(
+            in = ParameterIn.QUERY,
+            name ="nationality",
+            schema = @Schema(type = "string"),
+            description = "filter by fantasyName"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))
+                    }
+            )
+    })
+    ResponseEntity<List<ProductDTO>> getProducts(@Parameter(hidden = true) @RequestParam("q") String fantasyName) {
+        if (fantasyName.isEmpty()) {
+            throw new ParameterNullException();
+        }
+        List<Product> products = findUseCase.filterByFantasyName(fantasyName);
+        List<ProductDTO> productDTOS = products.stream()
+                .map(productDTOMapper::domainToDTO)
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(productDTOS);
     }
 
     @DeleteMapping("/{uuid}")
