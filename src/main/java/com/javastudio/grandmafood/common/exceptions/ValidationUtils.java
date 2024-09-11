@@ -4,6 +4,7 @@ import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -31,4 +32,15 @@ public class ValidationUtils {
             throw ex;
         }
     }
+
+    public static LocalDateTime parseToLocalDateTime(String dateString, String fieldName) {
+        try {
+            return LocalDateTime.parse(dateString);
+        } catch (Exception e) {
+            InvalidInputException ex = new InvalidInputException();
+            ex.addError(fieldName, "invalid date");
+            throw ex;
+        }
+    }
+
 }
