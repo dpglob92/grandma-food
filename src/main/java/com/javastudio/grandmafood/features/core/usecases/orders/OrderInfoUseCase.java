@@ -14,10 +14,16 @@ public class OrderInfoUseCase implements IOrderInfoUseCase {
 
     @Override
     public OrderInfo computeOrderInfo(Order order) {
-        return new OrderInfo(
-                new BigDecimal("0"),
-                new BigDecimal("0"),
-                new BigDecimal("0")
-        );
+
+        // TODO: check for null in order items
+
+        BigDecimal subTotal = order.getOrderItems().stream()
+                .map(oi -> oi.getProduct().getPrice().multiply(new BigDecimal(oi.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal tax = subTotal.multiply(ivaAsPercentage);
+        BigDecimal grandTotal = subTotal.add(tax);
+
+        return new OrderInfo(subTotal, tax, grandTotal);
     }
 }
