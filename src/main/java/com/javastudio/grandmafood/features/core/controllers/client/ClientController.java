@@ -61,14 +61,10 @@ public class ClientController {
             ),
             @ApiResponse(
                     responseCode = "409",
-                    description = "Client with the specified document id already exists",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Client with the specified email already exists",
+                    description = """
+                            Client with the specified document id already exists \n
+                            Client with the specified email already exists
+                            """,
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }
@@ -88,6 +84,13 @@ public class ClientController {
                     responseCode = "200",
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ClientDTO.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Document format is not valid",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }
             ),
             @ApiResponse(
@@ -112,6 +115,13 @@ public class ClientController {
     @Operation(summary = "Delete a client by document")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Document format is not valid",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "Client not found",

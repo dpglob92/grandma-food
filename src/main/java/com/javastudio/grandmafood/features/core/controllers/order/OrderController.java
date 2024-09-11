@@ -52,18 +52,11 @@ public class OrderController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Product not found",
+                    description = "Product not found \n Client not found",
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }
             ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Client not found",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
-                    }
-            )
     })
     ResponseEntity<OrderDTO> create(@RequestBody OrderCreateDTO orderCreateDTO) {
         OrderCreateInput input = orderDTOMapper.dtoToDomain(orderCreateDTO);
