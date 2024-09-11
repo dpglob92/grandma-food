@@ -4,6 +4,7 @@ import com.javastudio.grandmafood.common.exceptions.ValidationUtils;
 import com.javastudio.grandmafood.common.web.ApiError;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductCreateDTO;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTO;
+import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTOMapper;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductUpdateDTO;
 import com.javastudio.grandmafood.features.core.entities.product.Product;
 import com.javastudio.grandmafood.features.core.entities.product.ProductCreateInput;

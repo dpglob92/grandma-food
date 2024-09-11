@@ -1,4 +1,4 @@
-package com.javastudio.grandmafood.features.core.controllers.client;
+package com.javastudio.grandmafood.features.core.controllers.client.dto;
 
 import com.javastudio.grandmafood.features.core.entities.client.DocumentType;
 import com.javastudio.grandmafood.features.errors.ClientDocumentTypeUnknownException;

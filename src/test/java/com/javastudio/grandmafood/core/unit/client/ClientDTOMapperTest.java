@@ -1,8 +1,8 @@
 package com.javastudio.grandmafood.core.unit.client;
 
 import com.javastudio.grandmafood.core.utils.ClientTestUtil;
-import com.javastudio.grandmafood.features.core.controllers.client.ClientCreateDTO;
-import com.javastudio.grandmafood.features.core.controllers.client.ClientDTOMapper;
+import com.javastudio.grandmafood.features.core.controllers.client.dto.ClientCreateDTO;
+import com.javastudio.grandmafood.features.core.controllers.client.dto.ClientDTOMapper;
 import com.javastudio.grandmafood.features.core.entities.client.DocumentType;
 import com.javastudio.grandmafood.features.errors.ClientDocumentTypeUnknownException;
 import com.javastudio.grandmafood.features.errors.ClientInvalidDocumentFormatException;

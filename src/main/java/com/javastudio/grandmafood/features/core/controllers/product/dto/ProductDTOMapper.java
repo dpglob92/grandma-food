@@ -1,9 +1,6 @@
-package com.javastudio.grandmafood.features.core.controllers.product;
+package com.javastudio.grandmafood.features.core.controllers.product.dto;
 
 import com.javastudio.grandmafood.common.exceptions.InvalidInputException;
-import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductCreateDTO;
-import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTO;
-import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductUpdateDTO;
 import com.javastudio.grandmafood.features.core.entities.product.Product;
 import com.javastudio.grandmafood.features.core.entities.product.ProductCreateInput;
 import com.javastudio.grandmafood.features.core.entities.product.ProductUpdateInput;

@@ -1,7 +1,8 @@
-package com.javastudio.grandmafood.features.core.controllers.client;
+package com.javastudio.grandmafood.features.core.controllers.client.dto;
 
 import com.javastudio.grandmafood.features.core.entities.client.Client;
 import com.javastudio.grandmafood.features.core.entities.client.ClientCreateInput;
+import com.javastudio.grandmafood.features.core.entities.client.ClientUpdateInput;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,6 +11,18 @@ public class ClientDTOMapper {
     public ClientCreateInput toDomain(ClientCreateDTO data) {
         ClientDocumentUtils.DocumentData documentData = ClientDocumentUtils.separateDocument(data.getDocument());
         return ClientCreateInput.builder()
+                .documentType(documentData.documentType())
+                .documentId(documentData.documentId())
+                .name(data.getName())
+                .phone(data.getPhone())
+                .email(data.getEmail())
+                .deliveryAddress(data.getDeliveryAddress())
+                .build();
+    }
+
+    public ClientUpdateInput updateDtoToDomain(ClientUpdateDto data) {
+        ClientDocumentUtils.DocumentData documentData = ClientDocumentUtils.separateDocument(data.getDocument());
+        return ClientUpdateInput.builder()
                 .documentType(documentData.documentType())
                 .documentId(documentData.documentId())
                 .name(data.getName())
