@@ -73,8 +73,6 @@ public class ClientUpdateUseCase implements IClientUpdateUseCase {
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage().contains("client.email_unique_constraint")) {
                 throw new ClientUniqueEmailException();
-            } else if (e.getMessage().contains("client.document_id_unique_constraint")) {
-                throw new ClientUniqueDocumentException();
             }
             throw e;
         }
