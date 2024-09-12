@@ -6,13 +6,16 @@ import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductC
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTO;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTOMapper;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductUpdateDTO;
+import com.javastudio.grandmafood.features.core.controllers.product.dto.SalesReportDTO;
 import com.javastudio.grandmafood.features.core.entities.product.Product;
 import com.javastudio.grandmafood.features.core.entities.product.ProductCreateInput;
 import com.javastudio.grandmafood.features.core.entities.product.ProductUpdateInput;
+import com.javastudio.grandmafood.features.core.entities.sales.SalesReport;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductCreateUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductDeleteUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductFindUseCase;
 import com.javastudio.grandmafood.features.core.usecases.product.ProductUpdateUseCase;
+import com.javastudio.grandmafood.features.core.usecases.sales.SalesReportUseCase;
 import com.javastudio.grandmafood.features.errors.ParameterNullException;
 import com.javastudio.grandmafood.features.errors.ProductNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,19 +44,22 @@ public class ProductController {
     private final ProductDTOMapper productDTOMapper;
     private final ProductDeleteUseCase deleteUseCase;
     private final ProductUpdateUseCase updateUseCase;
+    private final SalesReportUseCase salesReportUseCase;
 
     public ProductController(
             ProductCreateUseCase createUseCase,
             ProductFindUseCase findUseCase,
             ProductDTOMapper productDTOMapper,
             ProductDeleteUseCase deleteUseCase,
-            ProductUpdateUseCase updateUseCase
+            ProductUpdateUseCase updateUseCase,
+            SalesReportUseCase salesReportUseCase
     ) {
         this.createUseCase = createUseCase;
         this.findUseCase = findUseCase;
         this.productDTOMapper = productDTOMapper;
         this.deleteUseCase = deleteUseCase;
         this.updateUseCase = updateUseCase;
+        this.salesReportUseCase = salesReportUseCase;
     }
 
     @PostMapping("/")
@@ -196,6 +202,24 @@ public class ProductController {
         UUID parsedUuid = ValidationUtils.parseUUID(uuid);
         deleteUseCase.deleteById(parsedUuid);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/sales_report/{start_date}/{end_date}")
+    @Operation(summary = "Get the sales report between a start date and end date")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid format for start or end date / End date must be after the start date",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
+            ),
+    })
+    ResponseEntity<SalesReportDTO> getSalesReport(@PathVariable("start_date") String start_date, @PathVariable("end_date") String end_date) {
+        SalesReport salesReport = salesReportUseCase.computeSaleReport(start_date, end_date);
+        SalesReportDTO salesReportDTO = SalesReportDTOMapper.salesReportToDto(salesReport);
+        return ResponseEntity.ok(salesReportDTO);
     }
 
 }
