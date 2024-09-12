@@ -61,6 +61,15 @@ public class GlobalExceptionHandler {
         String path = req.getRequestURI();
         ApiError apiError = new ApiError(path, ex.getMessage(), "E-INV-INVALID-BODY", ex);
 
-        return ResponseEntity.status(400).body(apiError);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    // For unknown errors
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<ApiError> handleHttpMessageNotReadableException(HttpServletRequest req, Exception ex) {
+        String path = req.getRequestURI();
+        ApiError apiError = new ApiError(path, ex.getMessage(), "E-UNKNOWN-ERROR", ex);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 }
