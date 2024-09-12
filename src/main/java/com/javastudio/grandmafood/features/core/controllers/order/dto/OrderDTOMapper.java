@@ -2,7 +2,7 @@ package com.javastudio.grandmafood.features.core.controllers.order.dto;
 
 import com.javastudio.grandmafood.common.DateTimeUtils;
 import com.javastudio.grandmafood.common.exceptions.ValidationUtils;
-import com.javastudio.grandmafood.features.core.controllers.client.ClientDocumentUtils;
+import com.javastudio.grandmafood.features.core.controllers.client.dto.ClientDocumentUtils;
 import com.javastudio.grandmafood.features.core.entities.orders.*;
 import org.springframework.stereotype.Component;
 

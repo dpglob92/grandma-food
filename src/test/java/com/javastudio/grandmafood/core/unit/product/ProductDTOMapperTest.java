@@ -2,7 +2,7 @@ package com.javastudio.grandmafood.core.unit.product;
 
 import com.javastudio.grandmafood.common.exceptions.FieldError;
 import com.javastudio.grandmafood.common.exceptions.InvalidInputException;
-import com.javastudio.grandmafood.features.core.controllers.product.ProductDTOMapper;
+import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductDTOMapper;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductCreateDTO;
 import com.javastudio.grandmafood.features.core.controllers.product.dto.ProductUpdateDTO;
 import com.javastudio.grandmafood.features.core.entities.product.FoodCategory;
