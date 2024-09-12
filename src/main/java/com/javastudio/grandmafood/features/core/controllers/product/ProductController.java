@@ -106,14 +106,10 @@ public class ProductController {
             ),
             @ApiResponse(
                     responseCode = "409",
-                    description = "Product with the specified name already exits",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "There are no different fields in the request",
+                    description = """
+                            There are no different fields in the request \n
+                            Product with the specified name already exits
+                            """,
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }
@@ -154,14 +150,14 @@ public class ProductController {
         UUID parsedUuid = ValidationUtils.parseUUID(uuid);
         Optional<Product> product = findUseCase.findById(parsedUuid);
         ProductDTO productDTO = productDTOMapper.domainToDTO(product.orElseThrow(ProductNotFoundException::new));
-        return ResponseEntity.status(201).body(productDTO);
+        return ResponseEntity.status(200).body(productDTO);
     }
 
     @GetMapping
-    @Operation(summary = "Get a products by fantasyName")
+    @Operation(summary = "Search products")
     @Parameter(
             in = ParameterIn.QUERY,
-            name ="q",
+            name = "q",
             schema = @Schema(type = "string"),
             description = "filter by fantasyName"
     )
