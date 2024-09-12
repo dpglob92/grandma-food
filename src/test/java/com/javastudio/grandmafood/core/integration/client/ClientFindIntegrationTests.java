@@ -1,4 +1,4 @@
-package com.javastudio.grandmafood.core.integration;
+package com.javastudio.grandmafood.core.integration.client;
 
 import com.javastudio.grandmafood.core.utils.ClientTestUtil;
 import com.javastudio.grandmafood.features.core.entities.client.Client;
