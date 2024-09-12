@@ -9,6 +9,7 @@ import com.javastudio.grandmafood.features.core.entities.orders.Order;
 import com.javastudio.grandmafood.features.core.entities.orders.OrderCreateInput;
 import com.javastudio.grandmafood.features.core.entities.orders.OrderInfo;
 import com.javastudio.grandmafood.features.core.usecases.orders.OrderCreateUseCase;
+import com.javastudio.grandmafood.features.core.usecases.orders.OrderInfoUseCase;
 import com.javastudio.grandmafood.features.core.usecases.orders.OrderUpdateUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +20,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @RequestMapping(path = "/api/v1/orders")
@@ -31,15 +31,19 @@ public class OrderController {
 
     private final OrderUpdateUseCase orderUpdateUseCase;
 
+    private final OrderInfoUseCase orderInfoUseCase;
+
     private final OrderDTOMapper orderDTOMapper;
 
     public OrderController(
             OrderCreateUseCase orderCreateUseCase,
             OrderUpdateUseCase orderUpdateUseCase,
+            OrderInfoUseCase orderInfoUseCase,
             OrderDTOMapper orderDTOMapper
     ) {
         this.orderCreateUseCase = orderCreateUseCase;
         this.orderUpdateUseCase = orderUpdateUseCase;
+        this.orderInfoUseCase = orderInfoUseCase;
         this.orderDTOMapper = orderDTOMapper;
     }
 
@@ -71,7 +75,7 @@ public class OrderController {
     ResponseEntity<OrderDTO> create(@RequestBody OrderCreateDTO orderCreateDTO) {
         OrderCreateInput input = orderDTOMapper.dtoToDomain(orderCreateDTO);
         Order order = orderCreateUseCase.create(input);
-        OrderInfo orderInfo = new OrderInfo(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+        OrderInfo orderInfo = orderInfoUseCase.computeOrderInfo(order);
         OrderDTO orderDTO = orderDTOMapper.domainToDTO(order, orderInfo);
         return ResponseEntity.status(201).body(orderDTO);
     }
@@ -100,7 +104,7 @@ public class OrderController {
     ResponseEntity<OrderDTO> update(@PathVariable("uuid") String uuid, @PathVariable("timestamp") String timestamp) {
         UUID parsedUuid = ValidationUtils.parseUUID(uuid);
         Order order = orderUpdateUseCase.updateDeliveryDate(parsedUuid, timestamp);
-        OrderInfo orderInfo = new OrderInfo(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+        OrderInfo orderInfo = orderInfoUseCase.computeOrderInfo(order);
         OrderDTO orderDTO = orderDTOMapper.domainToDTO(order, orderInfo);
         return ResponseEntity.status(200).body(orderDTO);
     }
