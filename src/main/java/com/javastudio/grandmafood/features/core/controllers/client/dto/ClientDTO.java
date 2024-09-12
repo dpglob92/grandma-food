@@ -1,4 +1,4 @@
-package com.javastudio.grandmafood.features.core.controllers.client;
+package com.javastudio.grandmafood.features.core.controllers.client.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
