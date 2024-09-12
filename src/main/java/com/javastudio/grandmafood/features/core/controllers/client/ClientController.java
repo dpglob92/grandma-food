@@ -8,6 +8,8 @@ import com.javastudio.grandmafood.features.core.usecases.client.ClientDeleteUseC
 import com.javastudio.grandmafood.features.core.usecases.client.ClientFindUseCase;
 import com.javastudio.grandmafood.features.errors.ClientNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -107,6 +110,33 @@ public class ClientController {
         ClientDTO responseModel = clientDTOMapper.domainToDto(client.get());
         return ResponseEntity.ok(responseModel);
     }
+
+    @GetMapping
+    @Operation(summary = "Get clients")
+    @Parameter(
+            in = ParameterIn.QUERY,
+            name = "orderBy",
+            schema = @Schema(type = "string"),
+            description = "Order by 'DOCUMENT', 'NAME' or 'ADDRESS'"
+    )
+    @Parameter(
+            in = ParameterIn.QUERY,
+            name = "direction",
+            schema = @Schema(type = "string"),
+            description = "direction of sort (ASC or DESC)"
+    )
+    ResponseEntity<List<ClientDTO>> getMany(
+            @Parameter(hidden = true) @RequestParam("orderBy") String orderBy,
+            @Parameter(hidden = true) @RequestParam("direction") String direction
+    ) {
+
+        List<Client> clients = clientFindUseCase.getClientsSorted(orderBy, direction);
+        List<ClientDTO> clientDTOS = clients.stream()
+                .map(clientDTOMapper::domainToDto)
+                .toList();
+        return ResponseEntity.ok(clientDTOS);
+    }
+
 
     @DeleteMapping("/{document}")
     @Operation(summary = "Delete a client by document")
