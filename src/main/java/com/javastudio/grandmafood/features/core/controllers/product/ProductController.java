@@ -170,7 +170,7 @@ public class ProductController {
     )
     ResponseEntity<List<ProductDTO>> getProducts(@Parameter(hidden = true) @RequestParam("q") String fantasyName) {
         if (fantasyName.isEmpty()) {
-            throw new ParameterNullException();
+            throw new ParameterNullException(fantasyName);
         }
         List<Product> products = findUseCase.filterByFantasyName(fantasyName);
         List<ProductDTO> productDTOS = products.stream()
